@@ -96,9 +96,18 @@ if path not in sys.path:
     sys.path.insert(0, path)
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "pasabuy.settings"
+os.environ.setdefault("DJANGO_DEBUG", "False")
+os.environ.setdefault("DJANGO_ALLOWED_HOSTS", "PasaBuy.pythonanywhere.com,.pythonanywhere.com")
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+```
+
+7. In the PythonAnywhere Web tab, add this static files mapping:
+
+```text
+URL: /static/
+Directory: /home/PasaBuy/PasaBuy/staticfiles
 ```
 
 To make PythonAnywhere update itself automatically after GitHub changes, add this as a scheduled task in the PythonAnywhere Tasks tab:
