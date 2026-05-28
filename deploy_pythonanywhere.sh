@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_DIR="${APP_DIR:-/home/PasaBuy/PasaBuy}"
+APP_DIR="${APP_DIR:-/home/PasaBuy/Mysite}"
 BRANCH="${BRANCH:-main}"
 VENV_DIR="${VENV_DIR:-/home/PasaBuy/.virtualenvs/pasabuy}"
 PA_USER="${PA_USER:-PasaBuy}"

@@ -63,20 +63,20 @@ On PythonAnywhere:
 
 ```bash
 cd /home/PasaBuy
-git clone https://github.com/kairu15/PasaBuy.git
+git clone https://github.com/kairu15/PasaBuy.git Mysite
 ```
 
 3. Run the deployment helper:
 
 ```bash
-cd /home/PasaBuy/PasaBuy
+cd /home/PasaBuy/Mysite
 bash deploy_pythonanywhere.sh
 ```
 
 4. In the PythonAnywhere Web tab, set the source code path to:
 
 ```text
-/home/PasaBuy/PasaBuy
+/home/PasaBuy/Mysite
 ```
 
 5. Set the virtualenv path to:
@@ -91,7 +91,7 @@ bash deploy_pythonanywhere.sh
 import os
 import sys
 
-path = "/home/PasaBuy/PasaBuy"
+path = "/home/PasaBuy/Mysite"
 if path not in sys.path:
     sys.path.insert(0, path)
 
@@ -107,13 +107,13 @@ application = get_wsgi_application()
 
 ```text
 URL: /static/
-Directory: /home/PasaBuy/PasaBuy/staticfiles
+Directory: /home/PasaBuy/Mysite/staticfiles
 ```
 
 To make PythonAnywhere update itself automatically after GitHub changes, add this as a scheduled task in the PythonAnywhere Tasks tab:
 
 ```bash
-cd /home/PasaBuy/PasaBuy && bash deploy_pythonanywhere.sh
+cd /home/PasaBuy/Mysite && bash deploy_pythonanywhere.sh
 ```
 
 Paid PythonAnywhere accounts can run scheduled tasks hourly. Some free accounts only allow daily tasks.
