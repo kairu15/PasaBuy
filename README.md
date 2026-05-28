@@ -52,6 +52,63 @@ You can also use the included helpers:
 
 Allow GPS/location permission when prompted.
 
+## PythonAnywhere Auto Update From GitHub
+
+This project includes `deploy_pythonanywhere.sh` for updating PythonAnywhere from GitHub.
+
+On PythonAnywhere:
+
+1. Open the Bash console.
+2. Clone the GitHub project if it is not there yet:
+
+```bash
+cd /home/PasaBuy
+git clone https://github.com/kairu15/PasaBuy.git
+```
+
+3. Run the deployment helper:
+
+```bash
+cd /home/PasaBuy/PasaBuy
+bash deploy_pythonanywhere.sh
+```
+
+4. In the PythonAnywhere Web tab, set the source code path to:
+
+```text
+/home/PasaBuy/PasaBuy
+```
+
+5. Set the virtualenv path to:
+
+```text
+/home/PasaBuy/.virtualenvs/pasabuy
+```
+
+6. Edit the WSGI file so it points to this Django project:
+
+```python
+import os
+import sys
+
+path = "/home/PasaBuy/PasaBuy"
+if path not in sys.path:
+    sys.path.insert(0, path)
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "pasabuy.settings"
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+```
+
+To make PythonAnywhere update itself automatically after GitHub changes, add this as a scheduled task in the PythonAnywhere Tasks tab:
+
+```bash
+cd /home/PasaBuy/PasaBuy && bash deploy_pythonanywhere.sh
+```
+
+Paid PythonAnywhere accounts can run scheduled tasks hourly. Some free accounts only allow daily tasks.
+
 ## Demo Accounts
 
 Run `python manage.py seed_demo` to create:
