@@ -1,0 +1,26 @@
+{% extends "market/base.html" %}
+{% block title %}Profile - PasaBuy{% endblock %}
+{% block content %}
+<section class="checkout-layout">
+    <div class="panel">
+        <p class="eyebrow">Buyer profile</p>
+        <h1>Delivery details</h1>
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="primary-button" type="submit">Save profile</button>
+        </form>
+    </div>
+    <aside class="panel">
+        <h2>Live location</h2>
+        <p class="muted">Current GPS is detected by your device when you allow location permission.</p>
+        <dl class="info-list">
+            <dt>Latitude</dt><dd>{{ profile.latitude|default:"Waiting for GPS" }}</dd>
+            <dt>Longitude</dt><dd>{{ profile.longitude|default:"Waiting for GPS" }}</dd>
+            <dt>Updated</dt><dd>{{ profile.location_updated_at|default:"Not yet updated" }}</dd>
+        </dl>
+        <a class="secondary-button" href="{% url 'map' %}">Open map</a>
+    </aside>
+</section>
+{% endblock %}
+

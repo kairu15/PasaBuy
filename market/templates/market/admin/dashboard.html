@@ -1,0 +1,72 @@
+{% extends "market/base.html" %}
+{% block title %}Admin Dashboard - PasaBuy{% endblock %}
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Admin control</p>
+        <h1>Dashboard</h1>
+    </div>
+    <a class="primary-button" href="{% url 'item_create' %}">Add item</a>
+</section>
+<section class="metrics-grid">
+    <div class="metric-panel"><span class="metric-value">PHP {{ total_sales_today }}</span><span class="metric-label">Sales today</span></div>
+    <div class="metric-panel"><span class="metric-value">{{ orders_today }}</span><span class="metric-label">Orders today</span></div>
+    <div class="metric-panel"><span class="metric-value">{{ active_items }}</span><span class="metric-label">Active items</span></div>
+    <div class="metric-panel"><span class="metric-value">{{ sold_items }}</span><span class="metric-label">Sold items</span></div>
+</section>
+<section class="admin-grid">
+    <div class="panel">
+        <h2>Sales by day</h2>
+        <div class="table-wrap clean">
+            <table>
+                <thead><tr><th>Date</th><th>Orders</th><th>Sales</th></tr></thead>
+                <tbody>
+                    {% for row in sales_by_day %}
+                        <tr><td>{{ row.day }}</td><td>{{ row.orders }}</td><td>PHP {{ row.total }}</td></tr>
+                    {% empty %}
+                        <tr><td colspan="3">No sales yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel">
+        <h2>Low stock</h2>
+        <div class="list-stack">
+            {% for item in low_stock %}
+                <a href="{% url 'item_edit' item.id %}"><span>{{ item.name }}</span><strong>{{ item.stock }}</strong></a>
+            {% empty %}
+                <p class="muted">No low stock items.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="panel">
+    <h2>Recent orders</h2>
+    <div class="table-wrap clean">
+        <table>
+            <thead><tr><th>Order</th><th>Buyer</th><th>Payment</th><th>Status</th><th>Total</th><th></th></tr></thead>
+            <tbody>
+                {% for order in recent_orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.buyer_name }}</td>
+                        <td>{{ order.get_payment_method_display }}</td>
+                        <td>{{ order.get_status_display }}</td>
+                        <td>PHP {{ order.total_amount }}</td>
+                        <td>
+                            <form method="post" action="{% url 'order_delete' order.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button class="danger-button" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6">No recent orders.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "market/base.html" %}
+{% block title %}Checkout - PasaBuy{% endblock %}
+{% block content %}
+<section class="checkout-layout">
+    <div class="panel">
+        <p class="eyebrow">Checkout</p>
+        <h1>Confirm delivery and payment</h1>
+        <form method="post" enctype="multipart/form-data" class="stacked-form" data-checkout-location>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <p>
+                {{ form.buyer_name.label_tag }}
+                {{ form.buyer_name }}
+                {{ form.buyer_name.errors }}
+            </p>
+            <p>
+                {{ form.address.label_tag }}
+                {{ form.address }}
+                {{ form.address.errors }}
+            </p>
+            <p>
+                {{ form.contact_number.label_tag }}
+                {{ form.contact_number }}
+                {{ form.contact_number.errors }}
+            </p>
+            {{ form.latitude }}
+            {{ form.longitude }}
+            <section class="payment-box">
+                <p class="eyebrow">Payment method</p>
+                <h2>GCash</h2>
+                {% if payment_profile %}
+                    <dl class="info-list payment-info">
+                        <dt>Name</dt><dd>{{ payment_profile.gcash_name }}</dd>
+                        <dt>Number</dt><dd>{{ payment_profile.gcash_number }}</dd>
+                    </dl>
+                {% else %}
+                    <p class="muted">GCash details are not set yet. Please contact the admin before paying.</p>
+                {% endif %}
+                <div class="receipt-upload">
+                    {{ form.payment_screenshot.label_tag }}
+                    {{ form.payment_screenshot }}
+                    <small>{{ form.payment_screenshot.help_text }}</small>
+                    {{ form.payment_screenshot.errors }}
+                </div>
+            </section>
+            <button class="primary-button" type="submit">Place order</button>
+        </form>
+    </div>
+    <aside class="panel summary-panel">
+        <h2>Order summary</h2>
+        {% for line in cart.items.all %}
+            <div class="summary-item">
+                <div class="summary-item-image">
+                    {% if line.item.image %}
+                        <img src="{{ line.item.image.url }}" alt="{{ line.item.name }}">
+                    {% elif line.item.image_url %}
+                        <img src="{{ line.item.image_url }}" alt="{{ line.item.name }}">
+                    {% else %}
+                        <span>{{ line.item.name|first }}</span>
+                    {% endif %}
+                </div>
+                <div class="summary-item-details">
+                    <strong>{{ line.item.name }}</strong>
+                    <small>{{ line.item.category|default:"Item" }}</small>
+                    <small>Qty {{ line.quantity }} x PHP {{ line.item.price }}</small>
+                    {% if line.item.description %}
+                        <p>{{ line.item.description|truncatechars:70 }}</p>
+                    {% endif %}
+                </div>
+                <strong class="summary-item-total">PHP {{ line.line_total }}</strong>
+            </div>
+        {% endfor %}
+        <div class="summary-total">
+            <span>Total</span>
+            <strong>PHP {{ cart.total_amount }}</strong>
+        </div>
+    </aside>
+</section>
+{% endblock %}

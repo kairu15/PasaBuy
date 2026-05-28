@@ -1,0 +1,17 @@
+{% extends "market/base.html" %}
+{% block title %}Register - PasaBuy{% endblock %}
+{% block content %}
+<section class="auth-shell">
+    <div class="auth-panel wide">
+        <p class="eyebrow">Buyer account</p>
+        <h1>Create your profile</h1>
+        <p class="muted">Address and GPS location are used to help admins and sellers prepare deliveries.</p>
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="primary-button" type="submit">Register</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+

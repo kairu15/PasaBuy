@@ -1,0 +1,35 @@
+{% extends "market/base.html" %}
+{% block title %}{{ item.name }} - PasaBuy{% endblock %}
+{% block content %}
+<section class="detail-layout">
+    {% if item.image %}
+        <button class="item-image large image-preview-trigger" type="button" data-image-src="{{ item.image.url }}" data-image-alt="{{ item.name }}" aria-label="Display {{ item.name }} image">
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+        </button>
+    {% elif item.image_url %}
+        <button class="item-image large image-preview-trigger" type="button" data-image-src="{{ item.image_url }}" data-image-alt="{{ item.name }}" aria-label="Display {{ item.name }} image">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}">
+        </button>
+    {% else %}
+        <div class="item-image large"><span>{{ item.name|first }}</span></div>
+    {% endif %}
+    <div class="panel">
+        <p class="eyebrow">{{ item.category|default:"Item" }}</p>
+        <h1>{{ item.name }}</h1>
+        <p>{{ item.description }}</p>
+        <div class="item-meta big">
+            <strong>PHP {{ item.price }}</strong>
+            <span>{{ item.stock }} in stock</span>
+        </div>
+        <form method="post" action="{% url 'add_to_cart' item.id %}" class="inline-form">
+            {% csrf_token %}
+            <input type="number" name="quantity" min="1" max="{{ item.stock }}" value="1" aria-label="Quantity">
+            <button class="primary-button" type="submit">Add to cart</button>
+        </form>
+        <form method="post" action="{% url 'buy_now' item.id %}" class="inline-form">
+            {% csrf_token %}
+            <button class="buy-now-button" type="submit">Buy</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

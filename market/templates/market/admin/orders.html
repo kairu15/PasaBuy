@@ -1,0 +1,78 @@
+{% extends "market/base.html" %}
+{% block title %}Orders - PasaBuy{% endblock %}
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Orders</h1>
+    </div>
+</section>
+
+<form class="filter-bar" method="get">
+    <input type="search" name="q" value="{{ query }}" placeholder="Search buyer name">
+    <button type="submit">Filter</button>
+</form>
+
+<div class="orders-list">
+    {% for order in orders %}
+        <article class="order-card">
+            <header class="order-card-header">
+                <div>
+                    <p class="eyebrow">Order #{{ order.id }}</p>
+                    <h2>{{ order.buyer_name }}</h2>
+                    <p class="muted">{{ order.created_at|date:"Y-m-d H:i" }}</p>
+                </div>
+                <div class="order-total">
+                    <span>{{ order.get_status_display }}</span>
+                    <strong>PHP {{ order.total_amount }}</strong>
+                </div>
+            </header>
+
+            <div class="order-card-grid">
+                <section>
+                    <h3>Buyer details</h3>
+                    <dl class="info-list">
+                        <dt>Contact</dt><dd>{{ order.contact_number }}</dd>
+                        <dt>Address</dt><dd>{{ order.address }}</dd>
+                    </dl>
+                </section>
+                <section>
+                    <h3>Payment</h3>
+                    <dl class="info-list">
+                        <dt>Method</dt><dd>{{ order.get_payment_method_display }}</dd>
+                        <dt>Receipt</dt>
+                        <dd>
+                            {% if order.payment_screenshot %}
+                                <button class="receipt-thumb" type="button" data-image-src="{{ order.payment_screenshot.url }}" data-image-alt="Payment screenshot for order {{ order.id }}">
+                                    <img src="{{ order.payment_screenshot.url }}" alt="Payment screenshot for order {{ order.id }}">
+                                </button>
+                            {% else %}
+                                <span class="muted">No screenshot</span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </section>
+            </div>
+
+            <section class="order-items">
+                <h3>Order items</h3>
+                {% for line in order.items.all %}
+                    <div class="admin-order-item">
+                        <span>{{ line.quantity }} x {{ line.item_name }}</span>
+                        <span>PHP {{ line.unit_price }} each</span>
+                        <strong>PHP {{ line.line_total }}</strong>
+                    </div>
+                {% endfor %}
+            </section>
+
+            <form method="post" action="{% url 'order_delete' order.id %}" class="order-delete-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button class="danger-button" type="submit">Delete order</button>
+            </form>
+        </article>
+    {% empty %}
+        <div class="empty-state">No orders found.</div>
+    {% endfor %}
+</div>
+{% endblock %}

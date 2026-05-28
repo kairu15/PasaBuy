@@ -1,0 +1,19 @@
+{% extends "market/base.html" %}
+{% block title %}GCash Settings - PasaBuy{% endblock %}
+{% block content %}
+<section class="form-layout">
+    <div class="panel">
+        <p class="eyebrow">Payment</p>
+        <h1>GCash details</h1>
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="primary-button" type="submit">Save GCash details</button>
+        </form>
+    </div>
+    <aside class="panel">
+        <h2>Buyer checkout</h2>
+        <p class="muted">These details are shown on the buyer checkout page so buyers know which GCash account to pay.</p>
+    </aside>
+</section>
+{% endblock %}

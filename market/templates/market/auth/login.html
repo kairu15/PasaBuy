@@ -1,0 +1,17 @@
+{% extends "market/base.html" %}
+{% block title %}Log in - PasaBuy{% endblock %}
+{% block content %}
+<section class="auth-shell">
+    <div class="auth-panel">
+        <p class="eyebrow">Secure access</p>
+        <h1>Log in to PasaBuy</h1>
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="primary-button" type="submit">Log in</button>
+        </form>
+        <p class="muted">New buyer? <a href="{% url 'register' %}">Create an account</a></p>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,60 @@
+{% extends "market/base.html" %}
+{% block title %}Buyer Home - PasaBuy{% endblock %}
+{% block content %}
+<section class="dashboard-grid">
+    <div class="panel hero-panel">
+        <p class="eyebrow">Buyer app</p>
+        <h1>Shop essentials near you</h1>
+        <p>Your GPS updates automatically while you use PasaBuy, so your delivery location stays current.</p>
+        <div class="button-row">
+            <a class="primary-button" href="{% url 'item_list' %}">Browse items</a>
+            <a class="secondary-button" href="{% url 'map' %}">View live map</a>
+        </div>
+    </div>
+    <div class="metric-panel">
+        <span class="metric-value">{{ cart.total_quantity }}</span>
+        <span class="metric-label">Items in cart</span>
+        <strong>PHP {{ cart.total_amount }}</strong>
+    </div>
+</section>
+
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Available now</p>
+        <h2>Featured items</h2>
+    </div>
+    <a href="{% url 'item_list' %}">See all</a>
+</section>
+<div class="item-grid">
+    {% for item in items %}
+        {% include "market/partials/item_card.html" with item=item %}
+    {% empty %}
+        <div class="empty-state">No available items yet.</div>
+    {% endfor %}
+</div>
+
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Recent activity</p>
+        <h2>Your orders</h2>
+    </div>
+</section>
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Order</th><th>Payment</th><th>Status</th><th>Total</th></tr></thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.get_payment_method_display }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>PHP {{ order.total_amount }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No orders yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

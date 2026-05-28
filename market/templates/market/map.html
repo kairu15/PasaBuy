@@ -1,0 +1,27 @@
+{% extends "market/base.html" %}
+{% block title %}Live Map - PasaBuy{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Real-time location</p>
+        <h1>Admin, seller, and buyer map</h1>
+    </div>
+    <button class="secondary-button" type="button" data-refresh-map>Refresh</button>
+</section>
+<section class="map-layout">
+    <div id="map" class="map-canvas" aria-label="Live PasaBuy map"></div>
+    <aside class="panel">
+        <h2>Live markers</h2>
+        <div id="location-list" class="list-stack">
+            <p class="muted">Waiting for location updates.</p>
+        </div>
+    </aside>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends "market/base.html" %}
+{% block title %}{{ title }} - PasaBuy{% endblock %}
+{% block content %}
+<section class="form-layout">
+    <div class="panel">
+        <p class="eyebrow">Inventory</p>
+        <h1>{{ title }}</h1>
+        <form method="post" enctype="multipart/form-data" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="button-row">
+                <button class="primary-button" type="submit">Save item</button>
+                <a class="secondary-button" href="{% url 'admin_items' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <aside class="panel">
+        <h2>Location fields</h2>
+        <p class="muted">Set seller latitude and longitude to place the seller on the live map. Admin and buyer GPS positions update automatically when they use the app.</p>
+    </aside>
+</section>
+{% endblock %}

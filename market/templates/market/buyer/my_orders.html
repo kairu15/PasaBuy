@@ -1,0 +1,66 @@
+{% extends "market/base.html" %}
+{% block title %}My Orders - PasaBuy{% endblock %}
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Buyer</p>
+        <h1>My Orders</h1>
+    </div>
+</section>
+
+<div class="orders-list">
+    {% for order in orders %}
+        <article class="order-card">
+            <header class="order-card-header">
+                <div>
+                    <p class="eyebrow">Order #{{ order.id }}</p>
+                    <h2>{{ order.get_status_display }}</h2>
+                    <p class="muted">{{ order.created_at|date:"Y-m-d H:i" }}</p>
+                </div>
+                <div class="order-total">
+                    <span>{{ order.get_payment_method_display }}</span>
+                    <strong>PHP {{ order.total_amount }}</strong>
+                </div>
+            </header>
+
+            <section class="order-items">
+                <h3>Ordered items</h3>
+                {% for line in order.items.all %}
+                    <div class="buyer-order-item">
+                        <div class="summary-item-image">
+                            {% if line.item.image %}
+                                <img src="{{ line.item.image.url }}" alt="{{ line.item_name }}">
+                            {% elif line.item.image_url %}
+                                <img src="{{ line.item.image_url }}" alt="{{ line.item_name }}">
+                            {% else %}
+                                <span>{{ line.item_name|first }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="summary-item-details">
+                            <strong>{{ line.item_name }}</strong>
+                            <small>Qty {{ line.quantity }} x PHP {{ line.unit_price }}</small>
+                            {% if line.item.category %}
+                                <small>{{ line.item.category }}</small>
+                            {% endif %}
+                        </div>
+                        <strong class="summary-item-total">PHP {{ line.line_total }}</strong>
+                    </div>
+                {% endfor %}
+            </section>
+
+            <section>
+                <h3>Payment screenshot</h3>
+                {% if order.payment_screenshot %}
+                    <button class="receipt-thumb" type="button" data-image-src="{{ order.payment_screenshot.url }}" data-image-alt="Payment screenshot for order {{ order.id }}">
+                        <img src="{{ order.payment_screenshot.url }}" alt="Payment screenshot for order {{ order.id }}">
+                    </button>
+                {% else %}
+                    <p class="muted">No screenshot uploaded.</p>
+                {% endif %}
+            </section>
+        </article>
+    {% empty %}
+        <div class="empty-state">You have no orders yet.</div>
+    {% endfor %}
+</div>
+{% endblock %}

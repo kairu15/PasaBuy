@@ -1,0 +1,49 @@
+{% extends "market/base.html" %}
+{% block title %}Cart - PasaBuy{% endblock %}
+{% block content %}
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Cart</p>
+        <h1>Your selected items</h1>
+    </div>
+    <strong class="total-pill">PHP {{ cart.total_amount }}</strong>
+</section>
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Item</th><th>Price</th><th>Quantity</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+            {% for line in cart.items.all %}
+                <tr>
+                    <td>{{ line.item.name }}</td>
+                    <td>PHP {{ line.item.price }}</td>
+                    <td>
+                        <form method="post" class="quantity-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_item_id" value="{{ line.id }}">
+                            <input type="number" name="quantity" min="1" max="{{ line.item.stock }}" value="{{ line.quantity }}">
+                            <button name="action" value="update" type="submit">Update</button>
+                        </form>
+                    </td>
+                    <td>PHP {{ line.line_total }}</td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_item_id" value="{{ line.id }}">
+                            <button class="danger-button" name="action" value="remove" type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">Your cart is empty.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="button-row end">
+    <a class="secondary-button" href="{% url 'item_list' %}">Continue shopping</a>
+    {% if cart.items.exists %}
+        <a class="primary-button" href="{% url 'checkout' %}">Checkout</a>
+    {% endif %}
+</div>
+{% endblock %}
+
