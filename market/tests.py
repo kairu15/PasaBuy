@@ -141,6 +141,8 @@ class PasaBuyFlowTests(TestCase):
         self.assertContains(response, "data-sidebar-close")
         self.assertContains(response, reverse("admin_orders"))
         self.assertContains(response, "Orders")
+        self.assertContains(response, reverse("admin_profile"))
+        self.assertContains(response, "Profile")
 
     def test_admin_can_update_gcash_payment_details(self):
         self.client.force_login(self.admin)
@@ -153,6 +155,23 @@ class PasaBuyFlowTests(TestCase):
         self.admin.userprofile.refresh_from_db()
         self.assertEqual(self.admin.userprofile.gcash_name, "Updated Admin")
         self.assertEqual(self.admin.userprofile.gcash_number, "09998887777")
+
+    def test_admin_can_update_profile_information(self):
+        self.client.force_login(self.admin)
+        response = self.client.post(
+            reverse("admin_profile"),
+            {
+                "name": "Updated Admin Name",
+                "address": "Updated admin address",
+                "contact_number": "09990001111",
+            },
+        )
+
+        self.assertRedirects(response, reverse("admin_profile"))
+        self.admin.userprofile.refresh_from_db()
+        self.assertEqual(self.admin.userprofile.name, "Updated Admin Name")
+        self.assertEqual(self.admin.userprofile.address, "Updated admin address")
+        self.assertEqual(self.admin.userprofile.contact_number, "09990001111")
 
     def test_admin_can_mark_item_as_sold(self):
         self.client.force_login(self.admin)

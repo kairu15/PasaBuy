@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/location/save/", views.save_location, name="save_location"),
     path("api/location/feed/", views.location_feed, name="location_feed"),
     path("admin-panel/", views.admin_dashboard, name="admin_dashboard"),
+    path("admin-panel/profile/", views.admin_profile, name="admin_profile"),
     path("admin-panel/payment/", views.admin_payment_settings, name="admin_payment_settings"),
     path("admin-panel/items/", views.admin_items, name="admin_items"),
     path("admin-panel/items/new/", views.item_create, name="item_create"),

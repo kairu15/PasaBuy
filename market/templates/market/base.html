@@ -27,6 +27,7 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_items' or request.resolver_match.url_name == 'item_create' or request.resolver_match.url_name == 'item_edit' %}active{% endif %}" href="{% url 'admin_items' %}">Items</a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_orders' %}active{% endif %}" href="{% url 'admin_orders' %}">Orders</a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_sold_items' %}active{% endif %}" href="{% url 'admin_sold_items' %}">Sales</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_profile' %}active{% endif %}" href="{% url 'admin_profile' %}">Profile</a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_payment_settings' %}active{% endif %}" href="{% url 'admin_payment_settings' %}">GCash</a>
                     {% else %}
                         <a class="nav-link {% if request.resolver_match.url_name == 'buyer_dashboard' %}active{% endif %}" href="{% url 'buyer_dashboard' %}">Home</a>

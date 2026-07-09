@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from .forms import AdminPaymentForm, BuyerProfileForm, BuyerRegistrationForm, CheckoutForm, ItemForm
+from .forms import AdminPaymentForm, AdminProfileForm, BuyerProfileForm, BuyerRegistrationForm, CheckoutForm, ItemForm
 from .models import Cart, CartItem, Item, LocationPing, Order, OrderItem, UserProfile
 
 
@@ -347,6 +347,29 @@ def admin_payment_settings(request):
         messages.success(request, "GCash payment details updated.")
         return redirect("admin_payment_settings")
     return render(request, "market/admin/payment_settings.html", {"form": form})
+
+
+@login_required
+def admin_profile(request):
+    blocked = _require_admin(request)
+    if blocked:
+        return blocked
+    profile_obj, _ = UserProfile.objects.get_or_create(
+        user=request.user,
+        defaults={
+            "role": UserProfile.Role.ADMIN,
+            "name": request.user.username,
+            "address": "",
+            "contact_number": "",
+        },
+    )
+    profile_obj.role = UserProfile.Role.ADMIN
+    form = AdminProfileForm(request.POST or None, instance=profile_obj)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Admin profile updated.")
+        return redirect("admin_profile")
+    return render(request, "market/admin/profile.html", {"form": form, "profile": profile_obj})
 
 
 @login_required

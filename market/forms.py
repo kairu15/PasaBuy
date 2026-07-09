@@ -35,6 +35,13 @@ class BuyerProfileForm(forms.ModelForm):
         widgets = {"address": forms.Textarea(attrs={"rows": 3})}
 
 
+class AdminProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("name", "address", "contact_number")
+        widgets = {"address": forms.Textarea(attrs={"rows": 3})}
+
+
 class AdminPaymentForm(forms.ModelForm):
     gcash_name = forms.CharField(label="GCash account name", max_length=120, required=False)
     gcash_number = forms.CharField(label="GCash number", max_length=30, required=False)

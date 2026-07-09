@@ -1,0 +1,24 @@
+{% extends "market/base.html" %}
+{% block title %}Admin Profile - PasaBuy{% endblock %}
+{% block content %}
+<section class="form-layout">
+    <div class="panel">
+        <p class="eyebrow">Admin account</p>
+        <h1>Profile</h1>
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="primary-button" type="submit">Save profile</button>
+        </form>
+    </div>
+    <aside class="panel">
+        <h2>Current information</h2>
+        <dl class="info-list">
+            <dt>Name</dt><dd>{{ profile.name|default:"Not set" }}</dd>
+            <dt>Contact</dt><dd>{{ profile.contact_number|default:"Not set" }}</dd>
+            <dt>Address</dt><dd>{{ profile.address|default:"Not set" }}</dd>
+            <dt>Role</dt><dd>{{ profile.get_role_display }}</dd>
+        </dl>
+    </aside>
+</section>
+{% endblock %}
